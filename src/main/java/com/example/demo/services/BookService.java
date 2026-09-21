@@ -8,30 +8,29 @@ import com.example.demo.model.Author;
 import com.example.demo.model.Book;
 import com.example.demo.repository.AuthorRepository;
 import com.example.demo.repository.BookRepository;
+import com.example.demo.repository.MemberRepository;
 
 @Service
 public class BookService {
 
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
+    private final MemberRepository memberRepository;
 
-    public BookService(BookRepository bookRepository, AuthorRepository authorRepository) {
+    public BookService(BookRepository bookRepository,AuthorRepository authorRepository, MemberRepository memberRepository) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
+        this.memberRepository = memberRepository;
     }
-
     // Add a new book
     public Book addBook(Book book) {
-        if (book.getAuthor() != null && book.getAuthor().getId() != null) {
-            Author author = authorRepository
-                    .findById(book.getAuthor().getId())
-                    .orElse(null);
-            book.setAuthor(author);
-        } else {
-            book.setAuthor(null);
-        }
+    Author author = authorRepository
+            .findById(book.getAuthor().getId())
+            .orElse(null);
 
-        return bookRepository.save(book);
+    book.setAuthor(author);
+
+    return bookRepository.save(book);
     }
 
     // Get all books
@@ -50,29 +49,27 @@ public class BookService {
 
     // Update book
     public Book updateBook(Long id, Book updatedBook) {
-        Book existingBook = bookRepository.findById(id).orElse(null);
 
-        if (existingBook == null) {
-            return null;
-        }
+    Book existingBook = bookRepository.findById(id).orElse(null);
 
-        existingBook.setTitle(updatedBook.getTitle());
-        existingBook.setPrice(updatedBook.getPrice());
-
-        if (updatedBook.getAuthor() != null && updatedBook.getAuthor().getId() != null) {
-            Author author = authorRepository
-                    .findById(updatedBook.getAuthor().getId())
-                    .orElse(null);
-            existingBook.setAuthor(author);
-        } else {
-            existingBook.setAuthor(null);
-        }
-
-        return bookRepository.save(existingBook);
+    if (existingBook == null) {
+        return null;
     }
 
+    existingBook.setTitle(updatedBook.getTitle());
+    existingBook.setPrice(updatedBook.getPrice());
+
+    Author author = authorRepository
+            .findById(updatedBook.getAuthor().getId())
+            .orElse(null);
+
+    existingBook.setAuthor(author);
+
+    return bookRepository.save(existingBook);
+    }
     // Delete book
     public String deleteBook(Long id) {
+
         if (bookRepository.existsById(id)) {
             bookRepository.deleteById(id);
             return "Book deleted successfully";
