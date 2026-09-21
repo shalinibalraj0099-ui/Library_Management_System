@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Members - Library Management System</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <a href="/books" class="brand-logo">
+            <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
+            <h1>Library System</h1>
+        </a>
+        <nav>
+            <a href="/books">📚 Books</a>
+            <a href="/authors">✍️ Authors</a>
+            <a href="/members" class="active">👥 Members</a>
+        </nav>
+    </div>
+</header>
+
+<div class="container">
+
+    <div class="page-header">
+        <div>
+            <h2>Member Management</h2>
+            <p>Register new library members or edit member profiles.</p>
+        </div>
+    </div>
+
+    <div class="grid-2">
+
+        <!-- Add Member Form -->
+        <div>
+            <div class="card">
+                <h3 style="margin-bottom: 1rem;">Add Member</h3>
+                <form th:action="@{/members/save}" th:object="${member}" method="post">
+
+                    <div class="form-group">
+                        <label for="name">Member Name</label>
+                        <input type="text" id="name" th:field="*{name}" placeholder="e.g. John Doe" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" th:field="*{email}" placeholder="e.g. john@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="text" id="phone" th:field="*{phone}" placeholder="e.g. +1 555-0199" required>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn" style="width: 100%;">+ Add Member</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <!-- Members Table -->
+        <div>
+            <div class="table-responsive" th:if="${not #lists.isEmpty(members)}">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="mem : ${members}">
+                            <td th:text="${mem.id}">1</td>
+                            <td><strong th:text="${mem.name}">Member Name</strong></td>
+                            <td th:text="${mem.email}">email@example.com</td>
+                            <td th:text="${mem.phone}">+1 555-0199</td>
+                            <td>
+                                <a class="edit" th:href="@{/members/edit/{id}(id=${mem.id})}">✏️ Edit</a>
+                                <a class="delete" th:href="@{/members/delete/{id}(id=${mem.id})}" onclick="return confirm('Are you sure you want to delete this member?')">🗑️ Delete</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card empty-state" th:if="${#lists.isEmpty(members)}">
+                <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                <h3>No members registered yet</h3>
+                <p>Use the form on the left to add your first member.</p>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<footer>
+    <p>&copy; 2026 Library Management System. Simple &amp; Fast.</p>
+</footer>
+
+</body>
+</html>

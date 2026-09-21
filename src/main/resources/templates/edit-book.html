@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Book - Library Management System</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <a href="/books" class="brand-logo">
+            <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
+            <h1>Library System</h1>
+        </a>
+        <nav>
+            <a href="/books" class="active">📚 Books</a>
+            <a href="/authors">✍️ Authors</a>
+            <a href="/members">👥 Members</a>
+        </nav>
+    </div>
+</header>
+
+<div class="container" style="max-width: 600px;">
+
+    <div class="page-header">
+        <div>
+            <h2>Edit Book</h2>
+            <p>Update information for book ID #<span th:text="${book.id}">1</span></p>
+        </div>
+        <a href="/books" class="btn btn-secondary">← Back to List</a>
+    </div>
+
+    <div class="card">
+        <form th:action="@{/books/update/{id}(id=${book.id})}" th:object="${book}" method="post">
+
+            <div class="form-group">
+                <label for="title">Book Title</label>
+                <input type="text" id="title" th:field="*{title}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="price">Price ($)</label>
+                <input type="number" step="0.01" id="price" th:field="*{price}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="authorId">Author</label>
+                <select id="authorId" name="authorId">
+                    <option value="">-- Select Author (Optional) --</option>
+                    <option th:each="auth : ${authors}"
+                            th:value="${auth.id}"
+                            th:text="${auth.name}"
+                            th:selected="${book.author != null and book.author.id == auth.id}">Author Name</option>
+                </select>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn">Update Book</button>
+                <a href="/books" class="btn btn-secondary">Cancel</a>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+<footer>
+    <p>&copy; 2026 Library Management System. Simple &amp; Fast.</p>
+</footer>
+
+</body>
+</html>

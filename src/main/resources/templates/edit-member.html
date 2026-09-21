@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Member - Library Management System</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <a href="/books" class="brand-logo">
+            <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
+            <h1>Library System</h1>
+        </a>
+        <nav>
+            <a href="/books">📚 Books</a>
+            <a href="/authors">✍️ Authors</a>
+            <a href="/members" class="active">👥 Members</a>
+        </nav>
+    </div>
+</header>
+
+<div class="container" style="max-width: 600px;">
+
+    <div class="page-header">
+        <div>
+            <h2>Edit Member</h2>
+            <p>Update member profile for ID #<span th:text="${member.id}">1</span></p>
+        </div>
+        <a href="/members" class="btn btn-secondary">← Back to Members</a>
+    </div>
+
+    <div class="card">
+        <form th:action="@{/members/update/{id}(id=${member.id})}" th:object="${member}" method="post">
+
+            <div class="form-group">
+                <label for="name">Member Name</label>
+                <input type="text" id="name" th:field="*{name}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" th:field="*{email}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="text" id="phone" th:field="*{phone}" required>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn">Update Member</button>
+                <a href="/members" class="btn btn-secondary">Cancel</a>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+<footer>
+    <p>&copy; 2026 Library Management System. Simple &amp; Fast.</p>
+</footer>
+
+</body>
+</html>

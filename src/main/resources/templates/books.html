@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Library Management System</title>
+
+    <link rel="stylesheet"
+          th:href="@{/style.css}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Library Management System</h1>
+
+    <a
+        href="/books/new"
+        class="btn">
+        + Add New Book
+    </a>
+
+
+    <table>
+
+        <thead>
+
+        <tr>
+
+            <th>ID</th>
+
+            <th>Title</th>
+
+            <th>Author</th>
+
+            <th>Country</th>
+
+            <th>Price</th>
+
+            <th>Actions</th>
+
+        </tr>
+
+        </thead>
+
+
+        <tbody>
+
+        <tr th:each="book : ${books}">
+
+            <!-- ID -->
+
+            <td th:text="${book.id}">
+                1
+            </td>
+
+
+            <!-- TITLE -->
+
+            <td th:text="${book.title}">
+                Java Programming
+            </td>
+
+
+            <!-- AUTHOR -->
+
+            <td>
+
+                <span
+                    th:if="${book.author != null}"
+                    th:text="${book.author.name}">
+                    James Gosling
+                </span>
+
+                <span
+                    th:unless="${book.author != null}">
+                    No Author
+                </span>
+
+            </td>
+
+
+            <!-- COUNTRY -->
+
+            <td>
+
+                <span
+                    th:if="${book.author != null}"
+                    th:text="${book.author.email}">
+                    johndoe@example.com
+                </span>
+
+                <span
+                    th:unless="${book.author != null}">
+                    -
+                </span>
+
+            </td>
+
+
+            <!-- PRICE -->
+
+            <td th:text="${book.price}">
+                799
+            </td>
+
+
+            <!-- ACTIONS -->
+
+            <td>
+
+                <a
+                    class="edit"
+                    th:href="@{/books/edit/{id}(id=${book.id})}">
+                    Edit
+                </a>
+
+
+                <a
+                    class="delete"
+                    th:href="@{/books/delete/{id}(id=${book.id})}"
+                    onclick="return confirm('Are you sure you want to delete this book?')">
+                    Delete
+                </a>
+
+            </td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
+
+    <p
+        th:if="${#lists.isEmpty(books)}">
+
+        No books available.
+
+    </p>
+
+</div>
+
+</body>
+
+</html>
